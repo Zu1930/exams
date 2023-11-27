@@ -114,7 +114,6 @@ describe('Склад', () => {
 
     describe('Метод revision', () => {
       it('Метод revision возвращает все продукты в которых timeAfterManufacture больше или равен expirationTime', () => {
-        console.log(warehouse);
         warehouse.acceptanceOfGoods([
           product1,
           product2,
@@ -124,14 +123,12 @@ describe('Склад', () => {
         ]);
         warehouse.passTime(17);
         const result = warehouse.revision();
-        console.log(result);
         expect(result).toEqual(arrProduct);
       });
       it('Метод revision не осталяет на складе просроченные продукты', () => {
         warehouse.acceptanceOfGoods([product5, product2]);
         warehouse.passTime(17);
         warehouse.revision();
-        console.log(warehouse.foods);
         expect(warehouse.foods).toEqual([product8]);
       });
     });
