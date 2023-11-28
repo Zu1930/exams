@@ -29,8 +29,8 @@ describe('BookReader', () => {
     });
 
     it('Метод booksAndPath возвращает объект {имя книги: имя файла с книгой}', async () => {
-      const bookAndPatch = await bookReader.booksAndPath();
-      expect(bookAndPatch).toEqual({
+      const bookAndPath = await bookReader.booksAndPath();
+      expect(bookAndPath).toEqual({
         'Война и Мир': 'book1.txt',
         'Идиот': 'book2.txt',
         'Двенадцать стульев': 'book3.txt',
