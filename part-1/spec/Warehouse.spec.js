@@ -1,7 +1,7 @@
 const Warehouse = require('../Warehouse');
 const Product = require('../Products');
 
-describe('Склад', () => {
+describe('Тесты для класса "Warehouse" ', () => {
   let warehouse;
   let product1;
   let product2;
@@ -14,17 +14,46 @@ describe('Склад', () => {
   let arrProduct;
 
   beforeEach(() => {
-    product1 = new Product('яйца', 24, 'еда');
-    product2 = new Product('мясо', 12, 'еда');
-    product3 = new Product('кола', 1000, 'напитки');
-    product4 = new Product('хлеб', 17, 'еда');
-    product5 = new Product('замороженная пицца', 72, 'еда');
-    product6 = new Product('яблочный свежевыжатый сок', 6, 'напитки');
-    product7 = new Product('мыло', 1200, 'хозяйственные товары');
-    product8 = {
+    product1 = new Product({
+      productName: 'яйца',
+      expirationTime: 24,
+      type: 'foods',
+    });
+    product2 = new Product({
       productName: 'мясо',
       expirationTime: 12,
-      type: 'еда',
+      type: 'foods',
+    });
+    product3 = new Product({
+      productName: 'кола',
+      expirationTime: 1000,
+      type: 'drinks',
+    });
+    product4 = new Product({
+      productName: 'хлеб',
+      expirationTime: 17,
+      type: 'foods',
+    });
+    product5 = new Product({
+      productName: 'замороженная пицца',
+      expirationTime: 72,
+      type: 'foods',
+    });
+    product6 = new Product({
+      productName: 'яблочный свежевыжатый сок',
+      expirationTime: 6,
+      type: 'drinks',
+    });
+    product7 = new Product({
+      productName: 'мыло',
+      expirationTime: 1200,
+      type: 'хозяйственные товары',
+    });
+
+    product8 = {
+      productName: 'замороженная пицца',
+      expirationTime: 72,
+      type: 'foods',
       timeAfterManufacture: 17,
     };
 
@@ -32,19 +61,19 @@ describe('Склад', () => {
       {
         productName: 'мясо',
         expirationTime: 12,
-        type: 'еда',
+        type: 'foods',
         timeAfterManufacture: 17,
       },
       {
         productName: 'хлеб',
         expirationTime: 17,
-        type: 'еда',
+        type: 'foods',
         timeAfterManufacture: 17,
       },
       {
         productName: 'яблочный свежевыжатый сок',
         expirationTime: 6,
-        type: 'напитки',
+        type: 'drinks',
         timeAfterManufacture: 17,
       },
     ];
@@ -68,7 +97,7 @@ describe('Склад', () => {
 
   describe('Тестирование работы методов Warehouse', () => {
     describe('Метод acceptanceOfGoods', () => {
-      it('Метод acceptanceOfGoods не принимает на склад товары не из категорий "еда" и "напитки', () => {
+      it('Метод acceptanceOfGoods не принимает на склад товары не из категорий "foods" и "drinks" ', () => {
         warehouse.acceptanceOfGoods([product7]);
         expect(warehouse.foods).toEqual([]);
         expect(warehouse.drinks).toEqual([]);
@@ -96,12 +125,21 @@ describe('Склад', () => {
     });
 
     describe('Метод passTime', () => {
-      it('Метод passTime принимает число и прибавляет его к свойству timeAfterManufacture каждому продукту на складе ', () => {
+      it('Метод passTime принимает число и увеличивает свойство timeAfterManufacture  для каждого продукта на складе на указанное количество времени ', () => {
         warehouse.acceptanceOfGoods([product1, product4, product3]);
         warehouse.passTime(5);
         expect(warehouse.foods[0].timeAfterManufacture).toBe(5);
         expect(warehouse.drinks[0].timeAfterManufacture).toBe(5);
       });
+
+      it('Метод passTime не мутирует исходные данные', () => {
+        warehouse.acceptanceOfGoods([product1, product4, product5]);
+        warehouse.passTime(5);
+        expect(warehouse.foods[0]).not.toBe(product1);
+        expect(warehouse.foods[1]).not.toBe(product4);
+        expect(warehouse.foods[2]).not.toBe(product5);
+      });
+
       it('Метод passTime корректно работает при нескольких применениях', () => {
         warehouse.acceptanceOfGoods([product1, product4, product7]);
         warehouse.passTime(12);
@@ -125,6 +163,7 @@ describe('Склад', () => {
         const result = warehouse.revision();
         expect(result).toEqual(arrProduct);
       });
+
       it('Метод revision не осталяет на складе просроченные продукты', () => {
         warehouse.acceptanceOfGoods([product5, product2]);
         warehouse.passTime(17);
