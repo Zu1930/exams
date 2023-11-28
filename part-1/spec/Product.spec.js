@@ -1,4 +1,4 @@
-const Product = require('../Products');
+const Product = require('../Product');
 
 describe('Product', () => {
   describe('productName', () => {
@@ -11,7 +11,7 @@ describe('Product', () => {
     it('должно быть успешно обновленно', () => {
       const chips1 = 'Lays';
       const product = new Product({ productName: chips1 });
-      const chips2 = 'Lays';
+      const chips2 = 'Doritos';
       product.productName = chips2;
       expect(product.productName).toBe(chips2);
     });
@@ -42,7 +42,7 @@ describe('Product', () => {
 
   describe('timeAfterManufacture', () => {
     it('тест на наличие атрибутов класса `Product`', () => {
-      const time = 12;
+      const time = 10;
       const product = new Product({
         productName: 'Мясо',
         expirationTime: 12,

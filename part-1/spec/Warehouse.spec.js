@@ -1,5 +1,5 @@
 const Warehouse = require('../Warehouse');
-const Product = require('../Products');
+const Product = require('../Product');
 
 describe('Тесты для класса "Warehouse" ', () => {
   let warehouse;
@@ -11,18 +11,18 @@ describe('Тесты для класса "Warehouse" ', () => {
   let product6;
   let product7;
   let product8;
-  let arrProduct;
+  let products;
 
   beforeEach(() => {
     product1 = new Product({
       productName: 'яйца',
       expirationTime: 24,
-      type: 'foods',
+      type: 'food',
     });
     product2 = new Product({
       productName: 'мясо',
       expirationTime: 12,
-      type: 'foods',
+      type: 'food',
     });
     product3 = new Product({
       productName: 'кола',
@@ -32,12 +32,12 @@ describe('Тесты для класса "Warehouse" ', () => {
     product4 = new Product({
       productName: 'хлеб',
       expirationTime: 17,
-      type: 'foods',
+      type: 'food',
     });
     product5 = new Product({
       productName: 'замороженная пицца',
       expirationTime: 72,
-      type: 'foods',
+      type: 'food',
     });
     product6 = new Product({
       productName: 'яблочный свежевыжатый сок',
@@ -53,21 +53,21 @@ describe('Тесты для класса "Warehouse" ', () => {
     product8 = {
       productName: 'замороженная пицца',
       expirationTime: 72,
-      type: 'foods',
+      type: 'food',
       timeAfterManufacture: 17,
     };
 
-    arrProduct = [
+    products = [
       {
         productName: 'мясо',
         expirationTime: 12,
-        type: 'foods',
+        type: 'food',
         timeAfterManufacture: 17,
       },
       {
         productName: 'хлеб',
         expirationTime: 17,
-        type: 'foods',
+        type: 'food',
         timeAfterManufacture: 17,
       },
       {
@@ -97,9 +97,9 @@ describe('Тесты для класса "Warehouse" ', () => {
 
   describe('Тестирование работы методов Warehouse', () => {
     describe('Метод acceptanceOfGoods', () => {
-      it('Метод acceptanceOfGoods не принимает на склад товары не из категорий "foods" и "drinks" ', () => {
+      it('Метод acceptanceOfGoods не принимает на склад товары не из категорий "food" и "drinks" ', () => {
         warehouse.acceptanceOfGoods([product7]);
-        expect(warehouse.foods).toEqual([]);
+        expect(warehouse.food).toEqual([]);
         expect(warehouse.drinks).toEqual([]);
       });
 
@@ -114,7 +114,7 @@ describe('Тесты для класса "Warehouse" ', () => {
           product7,
         ]);
 
-        expect(warehouse.foods).toEqual([
+        expect(warehouse.food).toEqual([
           product1,
           product2,
           product4,
@@ -128,24 +128,24 @@ describe('Тесты для класса "Warehouse" ', () => {
       it('Метод passTime принимает число и увеличивает свойство timeAfterManufacture  для каждого продукта на складе на указанное количество времени ', () => {
         warehouse.acceptanceOfGoods([product1, product4, product3]);
         warehouse.passTime(5);
-        expect(warehouse.foods[0].timeAfterManufacture).toBe(5);
+        expect(warehouse.food[0].timeAfterManufacture).toBe(5);
         expect(warehouse.drinks[0].timeAfterManufacture).toBe(5);
       });
 
       it('Метод passTime не мутирует исходные данные', () => {
         warehouse.acceptanceOfGoods([product1, product4, product5]);
         warehouse.passTime(5);
-        expect(warehouse.foods[0]).not.toBe(product1);
-        expect(warehouse.foods[1]).not.toBe(product4);
-        expect(warehouse.foods[2]).not.toBe(product5);
+        expect(warehouse.food[0]).not.toBe(product1);
+        expect(warehouse.food[1]).not.toBe(product4);
+        expect(warehouse.food[2]).not.toBe(product5);
       });
 
       it('Метод passTime корректно работает при нескольких применениях', () => {
         warehouse.acceptanceOfGoods([product1, product4, product7]);
         warehouse.passTime(12);
         warehouse.passTime(5);
-        expect(warehouse.foods[0].timeAfterManufacture).toBe(17);
-        expect(warehouse.foods[1].timeAfterManufacture).toBe(17);
+        expect(warehouse.food[0].timeAfterManufacture).toBe(17);
+        expect(warehouse.food[1].timeAfterManufacture).toBe(17);
         expect(product7.timeAfterManufacture).toBe(0);
       });
     });
@@ -161,14 +161,14 @@ describe('Тесты для класса "Warehouse" ', () => {
         ]);
         warehouse.passTime(17);
         const result = warehouse.revision();
-        expect(result).toEqual(arrProduct);
+        expect(result).toEqual(products);
       });
 
       it('Метод revision не осталяет на складе просроченные продукты', () => {
         warehouse.acceptanceOfGoods([product5, product2]);
         warehouse.passTime(17);
         warehouse.revision();
-        expect(warehouse.foods).toEqual([product8]);
+        expect(warehouse.food).toEqual([product8]);
       });
     });
   });

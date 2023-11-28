@@ -1,6 +1,8 @@
+const Product = require('./Product');
+
 class Warehouse {
   constructor() {
-    this.foods = [];
+    this.food = [];
     this.drinks = [];
   }
 
