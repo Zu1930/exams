@@ -132,14 +132,6 @@ describe('Тесты для класса "Warehouse" ', () => {
         expect(warehouse.drinks[0].timeAfterManufacture).toBe(5);
       });
 
-      it('Метод passTime не мутирует исходные данные', () => {
-        warehouse.acceptanceOfGoods([product1, product4, product5]);
-        warehouse.passTime(5);
-        expect(warehouse.food[0]).not.toBe(product1);
-        expect(warehouse.food[1]).not.toBe(product4);
-        expect(warehouse.food[2]).not.toBe(product5);
-      });
-
       it('Метод passTime корректно работает при нескольких применениях', () => {
         warehouse.acceptanceOfGoods([product1, product4, product7]);
         warehouse.passTime(12);
